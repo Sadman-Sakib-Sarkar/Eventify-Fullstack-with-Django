@@ -1,0 +1,77 @@
+{% extends "events/base.html" %}
+
+
+{% block content %}
+        
+        {% if searched %}
+            <h1>You Searched For {{ searched }}</h1>
+            <br>
+    
+            {% comment %} {% for venue in venues %}
+
+                <div class="card">
+                    <h5 class="card-header">Venue</h5>
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ venue }}</h5>
+                        <p class="card-text">
+                            <ul>
+                                {% if venue.address %}
+                                    <li>{{ venue.address }} <br></li>
+                                {% endif %}
+                                {% if venue.zip_code %}
+                                    <li>{{ venue.zip_code }} <br></li>
+                                {% endif %}
+                                {% if venue.phone %}
+                                    <li>{{ venue.phone }} <br></li>
+                                {% endif %}
+                                {% if venue.web %}
+                                    <li><a href="{{ venue.web }}">{{ venue.web }}</a> <br> </li>
+                                {% endif %}
+                                {% if venue.email_address %}
+                                    <li>{{ venue.email_address }} <br></li>
+                                {% endif %}
+                                {% if venue.id %}
+                                    <li>Owner: {{ venue.owner }} <br></li>
+                                {% endif %}
+                            </ul>
+                        </p>
+                    </div>
+
+                </div>
+
+                <br>
+            {% endfor %} {% endcomment %}
+
+
+            <div class="row row-cols-3 g-4">
+                {% for venue in venues %}
+                <center>
+    
+                  <div class="col">
+                    <div class="card">
+                        {% if venue.venue_image %}
+                        <img src="{{ venue.venue_image.url }}" class="card-img-top" alt="...">
+                          {% endif %}
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'show-venue' venue.id %}" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">{{ venue }}</a></h5>
+                        <p class="card-text"><strong>Location:</strong> {{ venue.address }} <br> <strong>Contact No:</strong> {{ venue.phone }} <br> <strong>Email:</strong> {{ venue.email_address }}</p>
+    
+    
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+                        <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </center>
+    
+                  {% endfor %}
+            </div>
+
+        {% else %}
+        <h1>Hey! You forgot to search for a venue...</h1>
+
+        {% endif %}
+
+{% endblock %}

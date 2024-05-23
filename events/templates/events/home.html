@@ -1,0 +1,180 @@
+{% extends "events/base.html" %}
+
+
+{% block content %}
+
+    <center>
+        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+
+        <h1>Hello {{ user.first_name }}! Events For {{ month }}, {{ year }}</h1>
+        <br>
+        <h4>As of {{ current_time }}</h4>
+        <br>
+
+        <div class='container'>
+            {% comment %} style the calander using bootstrap {% endcomment %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th style="color: red;">Fri</th>
+                        <th style="color: blue;">Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for week in cal %}
+                        <tr>
+                            {% for day, week_date in week %}
+                                {% if day == 0 %}
+                                    <td>{{ '' }}</td>
+                                {% elif week_date == 4 %}
+                                    <td style="color: red;">{{ day }}</td>
+                                {% elif week_date == 5 %}
+                                    <td style="color: blue;">{{ day }}</td>
+                                {% else %}
+                                    <td>{{ day }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+        {% comment %} {{ cal | safe }} {% endcomment %}
+    </center>
+        <br>
+        <br>
+        <h3>Upcoming Events</h3>
+        <br>
+        {% if event_list %}
+            <!-- {% for event in event_list %}
+                <div class="card">
+                    <h5 class="card-header">{{ event }}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Venue: {{ event.venue }}</h5>
+                        <p class="card-text">
+                            <ul>
+                                <li><strong>Date: </strong>{{ event.event_date }}</li>
+                                <li><strong>Days Till Event: </strong>{{ event.DaysToEvent }} Days</li>
+                                <li><strong>Occured: </strong>{{ event.IsPastEvent }}</li>
+                                <li><strong>Venue Website: </strong>{{ event.venue.web }}</li>
+                                <li><strong>Manager: </strong>{{ event.manager }}</li>
+                                <li><strong>Description: </strong>{{ event.description }}</li>
+                                <li>
+                                    <strong>Attendees: </strong> <br>
+                                    {% for user in event.attendees.all %}
+                                    {{ user }} <br>
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                        </p>
+                    </div>
+                    {% if user.is_authenticated %}
+                        {% if user == event.manager %}
+                            <div class="card-footer text-body-secondary">
+                                <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Update Event</a>
+                                <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <br>
+            {% endfor %} -->
+
+
+
+        {% for event in event_list %}
+
+        {% if event.approved %}
+
+        <div class="card">
+            
+            <h5 class="card-header">{{ event }}</h5>
+
+        <div style="display: flex;">
+
+
+            <div class="card-body" style="width: 48%;">
+            <h5 class="card-title">Venue: {{ event.venue }}</h5>
+            <p class="card-text">
+                <ul>
+                    <li>
+                        <strong>Date: </strong>{{ event.event_date.date }} 
+                        {% if event.IsPastEvent == 'Upcoming' %}
+                        <span class="badge text-bg-success">{{ event.IsPastEvent }}</span>
+                        {% else %}
+                        <span class="badge text-bg-danger">{{ event.IsPastEvent }}</span>
+                        {% endif %}
+                    </li>
+                    <li><strong>Days Till Event: </strong>{{ event.DaysToEvent }} Days</li>
+
+                    <li><strong>Description: </strong>{{ event.description }}</li>
+                    
+                    
+                    <li><strong>Venue Website: </strong>{{ event.venue.web }}</li>
+                    <li><strong>Manager: </strong>{{ event.manager }}</li>
+                    <!-- <li><strong>Approved: </strong>{{ event.approved }}</li> -->
+
+                    <li>
+                        <strong>Attendees: </strong> <br>
+                        {% for user in event.attendees.all %}
+                        {{ user }} <br>
+                        {% endfor %}
+                    </li>
+                </ul>
+            </p>
+            </div>
+
+            <div style="width: 48%; text-align: center; margin: auto 0 auto 0">
+                {% if event.venue.venue_image %}
+                        <img src="{{ event.venue.venue_image.url }}" alt="Venue Image" class="img-fluid rounded shadow-lg">
+                        <br>
+                        {{ event.venue }}
+                    {% endif %}
+            </div>
+
+
+        </div>
+        
+        {% if user.is_authenticated %}
+            {% if user == event.manager %}
+                <div class="text-body-secondary" style="margin: auto; margin-bottom: 20px;">
+                    <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm" style="margin-right: 30px;">Update Event</a>
+                    <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+
+        </div>
+        <br>
+
+
+        {% endif %}
+    
+        {% endfor %}
+
+        {% else %}
+            <p>No events are scheduled for this month.</p>
+        {% endif %}
+
+        <br>
+        <br>
+
+        
+        <!-- <hr> 
+
+        <center>
+        <p>Copyright &copy; {{ current_year }}</p>
+        </center> -->
+
+</div>
+    
+
+{% endblock %}

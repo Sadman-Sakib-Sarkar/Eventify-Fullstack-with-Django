@@ -1,0 +1,32 @@
+{% extends "events/base.html" %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+        <h1>Update Venue</h1>
+        <br>
+        <form action="" method="POST" enctype="multipart/form-data"> <!--enctype="multipart/form-data" is used to upload files-->
+            {% csrf_token %}
+        {{ form.as_p}}
+        <br>
+        <button type="submit" value="Update" class="btn btn-secondary">Update</button> 
+        </form>
+
+{% else %}
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+    <h1>Access Denied</h1>
+    <br>
+    <div class="container">
+        <div class="alert alert-danger" role="alert">
+            You must be logged in to update a venue.
+            <a href="{% url 'login' %}"> Login here</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+        
+        
+    
+
+{% endblock %}

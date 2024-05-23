@@ -1,0 +1,51 @@
+{% extends "events/base.html" %}
+
+
+{% block content %}
+        
+
+        <div class="card shadow" style="width: 40%; margin: auto;">
+            
+            <!-- <h5 class="card-header">Venue</h5> -->
+
+            <div class="card-body">
+                {% if venue.venue_image %}
+                    <img src="{{ venue.venue_image.url }}" alt="Venue Image" class="card-img-top mb-3">
+                {% endif %}
+
+            <h5 class="card-title" style="text-align: center;"><strong>{{ venue }}</strong></h5>
+            <p class="card-text">
+
+                <ul>
+                    {% if venue.address %}
+                    <li><strong>Address: </strong>{{ venue.address }} <br></li>
+                    {% endif %}
+                    {% if venue.zip_code %}
+                    <li><strong>Post Code: </strong>{{ venue.zip_code }} <br></li>
+                    {% endif %}
+                    {% if venue.phone %}
+                    <li><strong>Phone Number: </strong>{{ venue.phone }} <br></li>
+                    {% endif %}
+                    {% if venue.web %}
+                    <li><strong>Website: </strong><a href="{{ venue.web }}">{{ venue.web }}</a> <br> </li>
+                    {% endif %}
+                    {% if venue.email_address %}
+                    <li><strong>Venue Email: </strong>{{ venue.email_address }} <br></li>
+                    {% endif %}
+                    {% if venue_owner %}
+                    <li><strong>Venue Owner: </strong> {{ venue_owner }} <br></li>
+                    {% endif %}
+                    {% if venue_owner.email %}
+                    <li><strong>Owner's Email: </strong> {{ venue_owner.email }} <br></li>
+                    {% endif %}
+                </ul>
+                <br>
+                
+            </p>
+            </div>
+
+        </div>
+
+    
+
+{% endblock %}

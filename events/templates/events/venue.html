@@ -1,0 +1,104 @@
+{% extends "events/base.html" %}
+
+
+{% block content %}
+
+    <center>
+        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        <h1>Venues</h1>
+
+        <br>
+
+        {% comment %} <table class="table table-hover table-striped table-bordered"> {% endcomment %}
+            
+            
+        <div class="row row-cols-3 g-4">
+            {% for venue in venues %}
+
+              <div class="col">
+                <div class="card">
+                    {% if venue.venue_image %}
+                    <img src="{{ venue.venue_image.url }}" class="card-img-top" alt="...">
+                      {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'show-venue' venue.id %}" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">{{ venue }}</a></h5>
+                    <p class="card-text"><strong>Location:</strong> {{ venue.address }} <br> <strong>Contact No:</strong> {{ venue.phone }} <br> <strong>Email:</strong> {{ venue.email_address }}</p>
+
+
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+                    <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+
+        </div>
+
+
+
+
+
+        {% comment %} <tr>
+            <td>
+                <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a>
+            </td>
+            {% if user.is_authenticated %}
+            <td align="right">
+                <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-secondary btn-sm">Update</a>
+                <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+            </td>
+            {% endif %}
+
+        </tr> {% endcomment %}
+
+
+
+        {% comment %} </table> {% endcomment %}
+
+
+
+
+        <br>
+        <!-- {{ venues }} <br>
+        Has previous: {{ venues.has_previous }} <br>
+        Has next: {{ venues.has_next }} <br>
+        Current page: {{ venues.number }} <br>
+        Total pages: {{ venues.paginator.num_pages }} <br>
+        Total count: {{ venues.paginator.count }} <br> -->
+        <hr>
+        <br>
+
+
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+        {% if venues.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ venues.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        <!--<li class="page-item disabled"><a class="page-link" href="#">Page {{ venues.number }} of {{ venues.paginator.num_pages }}</a></li>-->
+
+        {% for i in venues.paginator.page_range %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endfor %}
+
+        {% if venues.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ venues.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ venues.paginator.num_pages }}">Last &raquo</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+        <br>
+        <br>
+
+
+    </div>
+        
+        
+    </center>
+
+{% endblock %}
